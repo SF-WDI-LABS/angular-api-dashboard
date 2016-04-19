@@ -18,16 +18,21 @@
 
 <div data-ng-controller="ApiDashboardController as dash">
 
-  <input type="text"
-    data-ng-model="dash.api_endpoint"
-    data-ng-keydown="$event.which === 13 && dash.getEndpoint()">
-  <button data-ng-click="dash.getEndpoint()"
-          data-ng-disabled="!dash.api_endpoint">
-    Request Endpoint
-    <span class="glyphicon glyphicon-refresh glyphicon-spin"
-          data-ng-class="{hide: !dash.pending}">
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Search for..."
+           data-ng-model="dash.api_endpoint"
+           data-ng-keydown="$event.which === 13 && dash.getEndpoint()">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="button"
+              data-ng-click="dash.getEndpoint()"
+              data-ng-disabled="!dash.api_endpoint">
+        Request Endpoint
+        <span class="glyphicon glyphicon-refresh glyphicon-spin"
+              data-ng-class="{hide: !dash.pending}">
+        </span>
+      </button>
     </span>
-  </button>
+  </div>
 
   <h4>Some Popular Endpoints:</h4>
   <ul data-ng-repeat="api in dash.popular_endpoints">
