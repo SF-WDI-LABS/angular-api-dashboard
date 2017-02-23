@@ -2,6 +2,10 @@ body {
   padding: 20px;
 }
 
+.pointer-cursor {
+  cursor: pointer;
+}
+
 
 /*CUSTOM ICON SPIN ANIMATION*/
 
