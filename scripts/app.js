@@ -1,9 +1,16 @@
-console.log('api_dashboard_controller.js loaded!');
+angular
+  .module("promisingApp", ["flakyHttp"])
+  .constant("flakyHttpSettings", {
+    // randomized $http failure rate (and delay)
+    // so you can test your success/error callbacks
+    FAIL_RATE: 0, // 0-100 percent
+    min_delay_ms: 0,
+    max_delay_ms: 900
+  })
+  .controller("ApiDashboardController", ApiDashboardController)
 
-FAIL_RATE = 50 // 0-100% percent change that $http requests will fail
 
-app.controller("ApiDashboardController", ApiDashboardController)
-
+ApiDashboardController.$inject = ["$http"];
 function ApiDashboardController($http){
   var vm = this;
 

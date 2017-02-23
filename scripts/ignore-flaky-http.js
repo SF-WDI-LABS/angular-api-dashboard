@@ -1,7 +1,36 @@
-// DO NOT TOUCH
+// DO NOT MODIFY
 
+/*
+ * This module simulates randomized $http failures
+ *   and causes brief delays of up to 900ms.
+ *
+ * For a 50% chance that $http requests will fail,
+ *   in app.js set `FAIL_RATE = 50`.
+ */
+
+angular
+  .module("flakyHttp", [])
+  .constant("flakyHttpSettings", {}) // overridden by user
+  .config(flakyHttp);
+
+flakyHttp.$inject = ["$httpProvider"];
 function flakyHttp ($httpProvider){
-  $httpProvider.interceptors.push(function($q) {
+
+  $httpProvider.interceptors.push(function($q, flakyHttpSettings) {
+    var settings = {
+      FAIL_RATE: 0,
+      min_delay_ms: 0,
+      max_delay_ms: 900
+    }
+
+    for (key in flakyHttpSettings) {
+      if (flakyHttpSettings[key] !== undefined) {
+        settings[key] = flakyHttpSettings[key];
+      }
+    }
+
+    var delayMaker = new DelayMaker(settings);
+
     return {
       // 'request': function(config) {
       //   return config;
@@ -9,7 +38,7 @@ function flakyHttp ($httpProvider){
 
       'response': function(response) {
          var deferred = $q.defer();
-         (new DelayMaker()).delay().then(
+         delayMaker.delay().then(
             function(){
               deferred.resolve(response);
             },
@@ -24,11 +53,11 @@ function flakyHttp ($httpProvider){
 };
 
 
-function DelayMaker (max, min, fail_rate, verbose){
-  this.min = min || 0; // ms
-  this.max = max || 900; // ms
-  this.fail_rate = fail_rate || window.FAIL_RATE || 0; // percent
-  this.verbose = verbose || true;
+function DelayMaker (opts){
+  this.min = typeof(opts.min_delay_ms) === 'number' ? opts.min_delay_ms : 0; // ms
+  this.max = typeof(opts.max_delay_ms) === 'number' ? opts.max_delay_ms : 900; // ms
+  this.fail_rate = opts.FAIL_RATE || window.FAIL_RATE || 0; // percent
+  this.verbose = opts.verbose || true;
   this.countdown_interval = 100;
 }
 
