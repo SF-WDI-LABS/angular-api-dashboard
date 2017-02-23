@@ -72,20 +72,21 @@ DelayMaker.prototype.delay = function(){
 
   var succeed = (Math.random() * 100) >= this.fail_rate;
 
-  var promise = jQuery.Deferred();
+  var promise = new Promise(function(resolve, reject){
+    setTimeout(function(){
+      counter && clearInterval(counter);
 
-  setTimeout(function(){
-    counter && clearInterval(counter);
+      if (succeed) {
+        console.log("resolved!");
+        resolve();
+      } else {
+        console.log("rejected!");
+        reject();
+      }
 
-    if (succeed) {
-      promise.resolve();
-    } else {
-      promise.reject();
-    }
+    }, wait_ms);
+  });
 
-    console.log( promise.state() + "!" ); // TODO: callback may not be back
-
-  }, wait_ms)
 
   return promise;
 }
