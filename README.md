@@ -22,7 +22,7 @@ budo --open
 The homepage is broken. Your goal is to get the dasboard API interface working!
 
 You may code in:
-* `js/app.js`
+* `scripts/app.js`
 * `index.html`
 
 ## Api Dashboard Goals
@@ -37,7 +37,7 @@ User Interface Improvements:
 * Avoid the "flicker". Make sure the user never literally sees `{{ ... }}` or placeholder data rendered anywhere in the html.
 
 ## Randomized Request Failures
-In `js/app.js` you can modify the `FAIL_RATE` constant to simulate, for example, a 50% chance that your `$http` requests will fail / be rejected by the server.
+In `scripts/app.js` you can modify the `FAIL_RATE` constant to simulate, for example, a 50% chance that your `$http` requests will fail / be rejected by the server.
 
 ```js
 FAIL_RATE: 50 // 50% percent chance requests will fail
